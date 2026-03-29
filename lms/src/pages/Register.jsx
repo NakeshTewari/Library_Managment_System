@@ -1,16 +1,18 @@
-import  {  useState } from "react";
-import {useNavigate} from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Alert from "@mui/material/Alert";
+import Collapse from "@mui/material/Collapse";
 
 const Register = () => {
-
-  const navigate= useNavigate();
+  const navigate = useNavigate();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [role, setRole] = useState("student");
+  const [alert, setAlert] = useState(null);
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -39,21 +41,29 @@ const Register = () => {
     };
 
     try {
-      const register_response= await axios.post("http://localhost:3000/api/users/register",
+      const register_response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/api/users/register`,
         {
-          name:name,
-          email:email,
-          password:password,
-          role:role
-  
-        }
-      )
+          name: name,
+          email: email,
+          password: password,
+          role: role,
+        },
+      );
 
-      if(register_response.status ===200){
-        alert(register_response.data.message);
-        navigate('/login');
+      if (register_response.status === 200) {
+        setAlert({
+          severity: "success",
+          message: register_response.data.message,
+        });
+
+        setTimeout(() => navigate("/login"), 1500);
       }
     } catch (error) {
+      setAlert({
+        severity: "error",
+        message: error.response?.data?.message,
+      });
       console.log("Registration error:", error);
     }
 
@@ -83,9 +93,21 @@ const Register = () => {
           Register to access the library
         </p>
 
+        <Collapse in={!!alert}>
+          {alert && (
+            <Alert
+              severity={alert.severity}
+              onClose={() => setAlert(null)}
+              sx={{ mb: 2, fontSize: "0.8rem" }}
+            >
+              {alert.message}
+            </Alert>
+          )}
+        </Collapse>
+
         {/* Form */}
         <form onSubmit={handleRegister} className="flex flex-col gap-4">
-          {/* Name */}
+       
           <div className="flex flex-col gap-1">
             <label className="text-sm text-gray-600">Full Name</label>
             <input
@@ -98,7 +120,7 @@ const Register = () => {
             />
           </div>
 
-          {/* Email */}
+ 
           <div className="flex flex-col gap-1">
             <label className="text-sm text-gray-600">Email</label>
             <input
@@ -111,7 +133,7 @@ const Register = () => {
             />
           </div>
 
-          {/* Role */}
+   
           <div className="flex flex-col gap-1">
             <label className="text-sm text-gray-600">Role</label>
             <select
@@ -125,7 +147,7 @@ const Register = () => {
             </select>
           </div>
 
-          {/* Password */}
+    
           <div className="flex flex-col gap-1">
             <label className="text-sm text-gray-600">Password</label>
             <input
@@ -138,7 +160,7 @@ const Register = () => {
             />
           </div>
 
-          {/* Confirm Password */}
+       
           <div className="flex flex-col gap-1">
             <label className="text-sm text-gray-600">Confirm Password</label>
             <input
@@ -151,7 +173,7 @@ const Register = () => {
             />
           </div>
 
-          {/* Register button */}
+      
           <button
             type="submit"
             className="bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg text-sm font-medium transition"
@@ -160,10 +182,13 @@ const Register = () => {
           </button>
         </form>
 
-        {/* Login link */}
+    
         <p className="text-center text-sm text-gray-400 mt-4">
           Already have an account?{" "}
-          <span onClick={()=> navigate('/login')} className="text-blue-500 cursor-pointer hover:underline font-medium">
+          <span
+            onClick={() => navigate("/login")}
+            className="text-blue-500 cursor-pointer hover:underline font-medium"
+          >
             Login
           </span>
         </p>

@@ -1,19 +1,21 @@
 import React from "react";
+import {useState} from 'react';
 
 const Card = ({ book, onDelete,onEdit ,currentUser, onBorrow}) => {
+
   return (
     <div className="border border-gray-300 rounded-lg w-72 overflow-hidden shadow-sm">
 
       <div className="flex border-b border-gray-300">
 
-        {/* Book image */}
+      
         <img
-          src={`http://localhost:3000/uploads/${book.image}`}
+          src={`${book.image}`}
           alt="book cover"
           className="w-28 h-36 object-cover border-r border-gray-300"
         />
 
-        {/* Name and Author */}
+     
         <div className="flex flex-col flex-1">
 
           <div className="flex border-b border-gray-300 h-1/2">
@@ -29,7 +31,7 @@ const Card = ({ book, onDelete,onEdit ,currentUser, onBorrow}) => {
         </div>
       </div>
 
-      {/* Bottom — ISBN, Quantity, Available */}
+
       <div className="flex flex-col">
 
         <div className="flex border-b border-gray-300">
@@ -51,7 +53,7 @@ const Card = ({ book, onDelete,onEdit ,currentUser, onBorrow}) => {
       </div>
 
 
-       {/* Action buttons */}
+       
       <div className="flex gap-2 p-3">
 
         {// If role is admin

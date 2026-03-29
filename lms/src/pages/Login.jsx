@@ -1,31 +1,41 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "../context/AuthContext";
+import Alert from "@mui/material/Alert";
+import Collapse from "@mui/material/Collapse";
 
 const Login = () => {
   const navigate = useNavigate();
 
+  const { setCurrentUser } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [alert, setAlert] = useState(null);
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
       const login_response = await axios.post(
-        "http://localhost:3000/api/users/login",
+        `${import.meta.env.VITE_BASE_URL}/api/users/login`,
         { email, password },
         { withCredentials: true },
       );
 
       if (login_response.status === 200) {
-        alert(login_response.data.message);
-        navigate("/dashboard");
+        setAlert({ severity: "success", message: login_response.data.message });
+        setCurrentUser(login_response.data.user);
+        console.log(login_response.data.user);
+        setTimeout(() => navigate("/dashboard"), 1500);
       }
     } catch (error) {
       console.error("Login error:", error);
+      setAlert({
+        severity: "error",
+        message: error.response?.data?.message || "Login failed. Try again.",
+      });
     }
-    console.log("Email:", email, "Password:", password);
   };
 
   return (
@@ -50,6 +60,18 @@ const Login = () => {
         <p className="text-center text-gray-400 text-sm mb-6">
           Login to your library account
         </p>
+
+        <Collapse in={!!alert}>
+          {alert && (
+            <Alert
+              severity={alert.severity}
+              onClose={() => setAlert(null)}
+              sx={{ mb: 2, fontSize: "0.8rem" }}
+            >
+              {alert.message}
+            </Alert>
+          )}
+        </Collapse>
 
         {/* Form */}
         <form onSubmit={handleLogin} className="flex flex-col gap-4">

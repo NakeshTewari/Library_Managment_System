@@ -28,14 +28,15 @@ const Home = () => {
         <div className="flex items-center justify-center gap-4">
           <Link to="/login">
             <button className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-md text-lg font-medium transition">
-              🔑 Login
+               Login
             </button>
           </Link>
 
           <Link to="/register">
             <button className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-md text-lg font-medium transition">
-              📝 Register
+               Register
             </button>
+            
           </Link>
         </div>
       </div>
