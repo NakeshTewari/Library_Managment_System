@@ -58,7 +58,7 @@ const AddBookModal = ({ book, onClose }) => {
       formData.append("image", imageUrl);
 
       const res = await axios.post(
-        `${process.env.REACT_APP_API_BASE_URL}/api/books/addBook`,
+        `${ import.meta.env.VITE_BASE_URL}/api/books/addBook`,
         formData,
         {
           withCredentials: true,

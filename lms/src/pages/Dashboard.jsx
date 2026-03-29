@@ -1,6 +1,7 @@
 import Card from "../components/Card";
 import { useEffect } from "react";
 import axios from "axios";
+import apiClient from "../api/apiClient";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import Alert from "@mui/material/Alert";
@@ -21,6 +22,7 @@ const Dashboard = () => {
 
   const getBooksResponse = async () => {
     const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/books/getBooks`);
+    const res = await apiClient.get(`/api/books/getBooks`);
     console.log(res.data);
     setBooks(res.data);
   };
@@ -31,6 +33,7 @@ const Dashboard = () => {
         `${import.meta.env.VITE_BASE_URL}/api/books/borrowedBooks`,
         { withCredentials: true },
       );
+      const res = await apiClient.get(`/api/books/borrowedBooks`);
       setBorrowedBooks(res.data);
     } catch (error) {
       console.error("Failed to fetch borrowed books:", error);
@@ -56,6 +59,7 @@ const Dashboard = () => {
         `${import.meta.env.VITE_BASE_URL}/api/books/deleteBook/${id}`,
         { withCredentials: true },
       );
+      const res = await apiClient.delete(`/api/books/deleteBook/${id}`);
       if (res.status === 200) {
         setAlert({ severity: "success", message: res.data.message });
         getBooksResponse();
@@ -96,6 +100,9 @@ const Dashboard = () => {
           headers: { "Content-Type": "multipart/form-data" },
         },
       );
+      const res = await apiClient.put(`/api/books/updateBook/${editBook.id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       if (res.status === 200)
         setAlert({ severity: "success", message: res.data.message });
       else setAlert({ severity: "warning", message: res.data.message });
@@ -118,6 +125,10 @@ const Dashboard = () => {
         { withCredentials: true },
       );
       
+      const res = await apiClient.post(`/api/books/borrowBook/${book.id}`, {
+        borrowDays,
+      });
+
       if (res.status === 200)
         setAlert({ severity: "success", message: res.data.message });
       else setAlert({ severity: "warning", message: res.data.message });
