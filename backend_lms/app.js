@@ -25,10 +25,13 @@ app.use(
   session({
     secret: "lms_secret_key",
     resave: false,
-    saveUninitialized: false, //dont save empty sessions
-    cookie: { secure: false, 
-       httpOnly: false, //only brower can send cookie
-        maxAge: 1000 * 60 * 60 * 24 },
+    saveUninitialized: false,
+    cookie: { 
+      secure: true,        
+      httpOnly: false,
+      sameSite: 'none',    
+      maxAge: 1000 * 60 * 60 * 24 
+    },
   }),
 );
 
