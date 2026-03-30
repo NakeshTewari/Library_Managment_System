@@ -17,32 +17,36 @@ const app = express();
 
 const MySQLStoreSession = MySQLStore(session);
 const sessionStore = new MySQLStoreSession({
-  host: process.env.DATABASE_HOST,
-  port: process.env.DATABASE_PORT,
-  user: process.env.DATABASE_USER,
-  password: process.env.DATABASE_PASSWORD,
-  database: process.env.DATABASE_NAME,
+  host: process.env.MYSQLHOST,
+  port: process.env.MYSQLPORT,
+  user: process.env.MYSQLUSER,
+  password: process.env.MYSQLPASSWORD,
+  database: process.env.MYSQLDATABASE,
 });
 
-app.use(cors({
-  origin: process.env.FRONTEND_URL,
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+  }),
+);
 
 app.use(express.json());
 
-app.use(session({
-  secret: "lms_secret_key",
-  resave: false,
-  saveUninitialized: false,
-  store: sessionStore,        // ✅ added
-  cookie: { 
-    secure: process.env.NODE_ENV === 'production',
-    httpOnly: false,
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-    maxAge: 1000 * 60 * 60 * 24 
-  },
-}));
+app.use(
+  session({
+    secret: "lms_secret_key",
+    resave: false,
+    saveUninitialized: false,
+    store: sessionStore, // ✅ added
+    cookie: {
+      secure: process.env.NODE_ENV === "production",
+      httpOnly: false,
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      maxAge: 1000 * 60 * 60 * 24,
+    },
+  }),
+);
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 

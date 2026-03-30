@@ -10,12 +10,21 @@ const BookModal = ({
   const [borrowDays, setBorrowDays] = useState(7);
   if (!book) return null;
 
-  console.log("inside book modal", book);
+  const isBorrowing = !buttonLabel.includes("Return");
+  const isReturning = buttonLabel.includes("Return");
+
+  const due_date = new Date(book.due_date);
+  const today = new Date();
+  const isOverdue = isReturning && due_date < today;
+  const finePerDay = 10;
+  const overdueDays = isOverdue
+    ? Math.ceil((today - due_date) / (1000 * 60 * 60 * 24))
+    : 0;
+  const totalReturnFine = overdueDays * finePerDay;
 
   return (
     <div className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50">
       <div className="bg-white rounded-xl shadow-xl w-[480px] p-5 relative">
-     
         <button
           onClick={onClose}
           className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 text-lg font-bold"
@@ -23,7 +32,6 @@ const BookModal = ({
           ✕
         </button>
 
-  
         <div className="flex gap-4 mb-4">
           <img
             src={book.image}
@@ -41,7 +49,6 @@ const BookModal = ({
 
         <hr className="border-gray-200 mb-3" />
 
-     
         <div className="flex justify-between text-xs text-gray-600 mb-4">
           <div className="flex flex-col gap-1">
             <p>
@@ -51,8 +58,35 @@ const BookModal = ({
             <p>
               <span className="font-semibold">ISBN:</span> {book.isbn}
             </p>
-           
+
+            {/* Status */}
+            <p>
+              <span className="font-semibold">Status:</span>{" "}
+              {isBorrowing ? (
+                <span className="text-green-500 font-bold">Available</span>
+              ) : isOverdue ? (
+                <span className="text-red-500 font-bold">
+                  Overdue by {overdueDays} days
+                </span>
+              ) : (
+                <span className="text-green-500 font-bold">On Time</span>
+              )}
+            </p>
+
+            {isReturning && (
+              <>
+                <p>
+                  <span className="font-semibold">Fine Per Day:</span> ₹
+                  {isOverdue ? finePerDay.toFixed(2) : "0.00"}
+                </p>
+                <p>
+                  <span className="font-semibold">Total Return Fine:</span> ₹
+                  {isOverdue ? totalReturnFine.toFixed(2) : "0.00"}
+                </p>
+              </>
+            )}
           </div>
+
           <div className="flex flex-col gap-1 text-right">
             <p>
               <span className="font-semibold">Price:</span> ₹
@@ -65,7 +99,7 @@ const BookModal = ({
           </div>
         </div>
 
-        {!buttonLabel.includes("Return") && (
+        {isBorrowing && (
           <>
             <hr className="border-gray-200 mb-3" />
             <div className="flex gap-3 mb-3">
@@ -86,7 +120,6 @@ const BookModal = ({
           </>
         )}
 
-   
         <button
           onClick={() => onAddToCart(book, borrowDays)}
           className="w-full bg-gray-700 hover:bg-gray-800 text-white text-sm py-2 rounded-lg transition"

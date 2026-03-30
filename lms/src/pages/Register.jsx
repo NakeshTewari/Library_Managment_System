@@ -107,7 +107,6 @@ const Register = () => {
 
         {/* Form */}
         <form onSubmit={handleRegister} className="flex flex-col gap-4">
-       
           <div className="flex flex-col gap-1">
             <label className="text-sm text-gray-600">Full Name</label>
             <input
@@ -120,7 +119,6 @@ const Register = () => {
             />
           </div>
 
- 
           <div className="flex flex-col gap-1">
             <label className="text-sm text-gray-600">Email</label>
             <input
@@ -133,7 +131,6 @@ const Register = () => {
             />
           </div>
 
-   
           <div className="flex flex-col gap-1">
             <label className="text-sm text-gray-600">Role</label>
             <select
@@ -147,7 +144,6 @@ const Register = () => {
             </select>
           </div>
 
-    
           <div className="flex flex-col gap-1">
             <label className="text-sm text-gray-600">Password</label>
             <input
@@ -160,7 +156,6 @@ const Register = () => {
             />
           </div>
 
-       
           <div className="flex flex-col gap-1">
             <label className="text-sm text-gray-600">Confirm Password</label>
             <input
@@ -173,7 +168,6 @@ const Register = () => {
             />
           </div>
 
-      
           <button
             type="submit"
             className="bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg text-sm font-medium transition"
@@ -182,7 +176,6 @@ const Register = () => {
           </button>
         </form>
 
-    
         <p className="text-center text-sm text-gray-400 mt-4">
           Already have an account?{" "}
           <span
