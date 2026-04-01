@@ -99,10 +99,7 @@ const Login = () => {
             />
           </div>
 
-          {/* Forgot password */}
-          <p className="text-right text-xs text-blue-500 cursor-pointer hover:underline">
-            Forgot password?
-          </p>
+         
 
           {/* Login button */}
           <button
