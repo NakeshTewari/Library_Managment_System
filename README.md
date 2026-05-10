@@ -24,7 +24,7 @@ This Library Management System is a full-stack application designed to streamlin
 
 - **Frontend**: JavaScript, HTML5, CSS3
 - **Backend**: Node.js with Express.js
-- **Database**: MongoDB (or your database choice)
+- **Database**: MySQL
 - **AI Integration**: Google Gemini AI API
 - **Deployment**: Vercel
 
