@@ -2,8 +2,6 @@
 
 A comprehensive web-based library management system built with JavaScript that enables efficient management of books, users, and library operations.
 
-**Live Demo:** [https://library-managment-system-sable.vercel.app](https://library-managment-system-sable.vercel.app)
-
 ---
 
 ## Overview
